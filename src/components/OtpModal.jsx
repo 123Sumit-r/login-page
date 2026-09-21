@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { KeyRound, Timer, RefreshCw, X, Sparkles, CheckCircle2 } from 'lucide-react';
+import { KeyRound, Timer, RefreshCw, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const OtpModal = () => {
-  const { pendingUser, verifyOtp, resendOtp, isOtpModalOpen, setIsOtpModalOpen, emails } = useAuth();
+  const { pendingUser, verifyOtp, resendOtp, isOtpModalOpen, setIsOtpModalOpen } = useAuth();
 
   const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
   const [resendCooldown, setResendCooldown] = useState(60);
@@ -70,30 +70,22 @@ export const OtpModal = () => {
     }
   };
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
     const code = otpDigits.join('');
     if (code.length < 6) return;
 
     setIsVerifying(true);
-    verifyOtp(code);
+    await verifyOtp(code);
     setIsVerifying(false);
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (resendCooldown > 0) return;
-    resendOtp();
+    await resendOtp();
     setResendCooldown(60);
     setOtpDigits(['', '', '', '', '', '']);
     inputRefs[0].current?.focus();
-  };
-
-  // Quick auto-fill latest sent OTP for testing
-  const handleAutoFillFromInbox = () => {
-    if (pendingUser && pendingUser.otp) {
-      const digits = pendingUser.otp.split('');
-      setOtpDigits(digits);
-    }
   };
 
   return (
@@ -120,21 +112,6 @@ export const OtpModal = () => {
           <p className="text-xs font-semibold text-blue-400 mt-0.5 bg-blue-500/10 py-1 px-3 rounded-full inline-block border border-blue-500/20">
             {pendingUser.email}
           </p>
-        </div>
-
-        {/* Quick Auto-fill banner for code reviewer convenience */}
-        <div className="mb-5 p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-indigo-300">
-            <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span>Found OTP Code: <strong className="text-white tracking-widest">{pendingUser.otp}</strong></span>
-          </div>
-          <button
-            onClick={handleAutoFillFromInbox}
-            className="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-[11px] transition-colors flex items-center gap-1 cursor-pointer"
-          >
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Auto-Fill OTP
-          </button>
         </div>
 
         <form onSubmit={handleVerify}>

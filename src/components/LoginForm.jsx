@@ -3,7 +3,7 @@ import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles, ShieldAlert } from 'lucide-re
 import { useAuth } from '../context/AuthContext';
 
 export const LoginForm = ({ onSwitchToRegister }) => {
-  const { loginUser, setIsForgotPasswordOpen, registerUser } = useAuth();
+  const { loginUser, setIsForgotPasswordOpen } = useAuth();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -36,12 +36,12 @@ export const LoginForm = ({ onSwitchToRegister }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    loginUser({
+    await loginUser({
       email: formData.email,
       password: formData.password
     });
@@ -60,12 +60,6 @@ export const LoginForm = ({ onSwitchToRegister }) => {
       rememberMe: true
     });
 
-    // Also ensure demo user exists in registered list
-    registerUser({
-      fullName: 'Sumit Kumar',
-      email: demoEmail,
-      password: demoPass
-    });
   };
 
   return (

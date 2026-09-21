@@ -6,7 +6,6 @@ import { LoginForm } from './components/LoginForm';
 import { Dashboard } from './components/Dashboard';
 import { OtpModal } from './components/OtpModal';
 import { ForgotPasswordModal } from './components/ForgotPasswordModal';
-import { EmailSimulatorDrawer } from './components/EmailSimulatorDrawer';
 import { ToastContainer } from './components/Toast';
 
 const MainContent = () => {
@@ -68,7 +67,6 @@ const MainContent = () => {
       {/* Global Modals & Drawers */}
       <OtpModal />
       <ForgotPasswordModal />
-      <EmailSimulatorDrawer />
       <ToastContainer />
 
       {/* Footer */}

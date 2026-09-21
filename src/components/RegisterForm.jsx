@@ -91,7 +91,7 @@ export const RegisterForm = ({ onSwitchToLogin }) => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    const success = registerUser({
+    await registerUser({
       fullName: formData.fullName,
       email: formData.email,
       password: formData.password

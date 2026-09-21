@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { KeyRound, Mail, Lock, Eye, EyeOff, X, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { KeyRound, Mail, Lock, Eye, EyeOff, X, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const ForgotPasswordModal = () => {
   const {
     isForgotPasswordOpen,
     setIsForgotPasswordOpen,
-    resetSession,
     requestPasswordReset,
     confirmPasswordReset
   } = useAuth();
@@ -31,7 +30,7 @@ export const ForgotPasswordModal = () => {
     setError('');
   };
 
-  const handleStep1 = (e) => {
+  const handleStep1 = async (e) => {
     e.preventDefault();
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError('Please enter a valid registered email address.');
@@ -39,13 +38,13 @@ export const ForgotPasswordModal = () => {
     }
 
     setError('');
-    const success = requestPasswordReset(email);
+    const success = await requestPasswordReset(email);
     if (success) {
       setStep(2);
     }
   };
 
-  const handleStep2 = (e) => {
+  const handleStep2 = async (e) => {
     e.preventDefault();
     if (!otpCode || otpCode.length < 6) {
       setError('Please enter the full 6-digit OTP code.');
@@ -61,7 +60,7 @@ export const ForgotPasswordModal = () => {
     }
 
     setError('');
-    const success = confirmPasswordReset(otpCode, newPassword);
+    const success = await confirmPasswordReset(otpCode, newPassword);
     if (success) {
       handleClose();
     }
@@ -122,22 +121,6 @@ export const ForgotPasswordModal = () => {
           </form>
         ) : (
           <form onSubmit={handleStep2} className="space-y-4">
-            {resetSession?.otp && (
-              <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-between text-xs text-indigo-300">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-indigo-400" />
-                  <span>Reset OTP Code: <strong className="text-white tracking-widest">{resetSession.otp}</strong></span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setOtpCode(resetSession.otp)}
-                  className="px-2 py-0.5 rounded bg-indigo-600 text-white font-semibold text-[10px]"
-                >
-                  Fill Code
-                </button>
-              </div>
-            )}
-
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">6-Digit OTP Code</label>
               <input

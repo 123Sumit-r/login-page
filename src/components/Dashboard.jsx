@@ -6,14 +6,14 @@ export const Dashboard = () => {
   const { currentUser, logoutUser, updateUserProfile, addToast, triggerConfetti } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState(currentUser?.fullName || '');
+  const [fullName, setFullName] = useState(currentUser?.name || '');
 
   if (!currentUser) return null;
 
-  const handleSaveProfile = (e) => {
+  const handleSaveProfile = async (e) => {
     e.preventDefault();
     if (!fullName.trim()) return;
-    updateUserProfile({ fullName });
+    await updateUserProfile({ fullName });
     setIsEditing(false);
   };
 
@@ -34,7 +34,7 @@ export const Dashboard = () => {
             <div className="relative">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-blue-500 via-indigo-500 to-purple-600 p-0.5 shadow-xl shadow-blue-500/20">
                 <div className="w-full h-full bg-slate-950 rounded-[15px] flex items-center justify-center text-white font-extrabold text-2xl sm:text-3xl">
-                  {currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U'}
+                  {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
                 </div>
               </div>
               <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-slate-950 flex items-center justify-center text-white shadow-lg" title="Email Verified">
@@ -59,7 +59,7 @@ export const Dashboard = () => {
                 ) : (
                   <>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                      {currentUser.fullName}
+                      {currentUser.name}
                     </h1>
                     <button
                       onClick={() => setIsEditing(true)}
