@@ -24,23 +24,23 @@ export const ToastContainer = () => {
   const getBorderColor = (type) => {
     switch (type) {
       case 'success':
-        return 'border-emerald-500/40 bg-emerald-950/40';
+        return 'border-emerald-200 bg-emerald-50';
       case 'error':
-        return 'border-rose-500/40 bg-rose-950/40';
+        return 'border-rose-200 bg-rose-50';
       case 'warning':
-        return 'border-amber-500/40 bg-amber-950/40';
+        return 'border-amber-200 bg-amber-50';
       case 'info':
       default:
-        return 'border-blue-500/40 bg-slate-900/80';
+        return 'border-blue-200 bg-blue-50';
     }
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`pointer-events-auto flex items-start gap-3 p-4 rounded-xl border backdrop-blur-md shadow-2xl transition-all duration-300 animate-slide-in ${getBorderColor(
+          className={`pointer-events-auto flex items-start gap-3 p-3 rounded-lg border shadow-sm transition-all duration-300 animate-slide-in ${getBorderColor(
             toast.type
           )}`}
         >

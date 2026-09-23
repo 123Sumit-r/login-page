@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyRound, Mail, Lock, Eye, EyeOff, X, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, X, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const ForgotPasswordModal = () => {
@@ -67,8 +67,8 @@ export const ForgotPasswordModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="glass-panel w-full max-w-md p-6 sm:p-8 rounded-2xl shadow-2xl relative border border-white/10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/30">
+      <div className="glass-panel auth-card w-full max-w-md p-6 sm:p-8 relative">
 
         {/* Close Button */}
         <button
@@ -79,12 +79,10 @@ export const ForgotPasswordModal = () => {
         </button>
 
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 mb-3 shadow-lg shadow-amber-500/30 text-white">
-            <KeyRound className="w-7 h-7" />
-          </div>
-          <h3 className="text-2xl font-bold text-white">Reset Password</h3>
-          <p className="text-xs text-slate-300 mt-1">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-2">Account recovery</p>
+          <h3 className="text-2xl font-bold text-slate-900">Reset password</h3>
+          <p className="text-sm text-slate-500 mt-2">
             {step === 1 ? 'Enter your email address to receive a verification OTP code' : `Verify code & create a new password`}
           </p>
         </div>
@@ -113,7 +111,7 @@ export const ForgotPasswordModal = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold text-sm shadow-lg shadow-amber-500/25 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Send Reset OTP</span>
               <ArrowRight className="w-4 h-4" />
@@ -170,7 +168,7 @@ export const ForgotPasswordModal = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm shadow-lg shadow-emerald-500/25 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4" />
               <span>Update Password & Save</span>

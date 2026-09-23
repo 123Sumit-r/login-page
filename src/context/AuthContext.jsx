@@ -7,6 +7,7 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [pendingUser, setPendingUser] = useState(null);
+  const [verificationComplete, setVerificationComplete] = useState(false);
   const [resetSession, setResetSession] = useState(null);
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async ({ fullName, email, password }) => {
     try {
+      setVerificationComplete(false);
       await authApi.register({ name: fullName, email, password });
       setPendingUser({ fullName, email: email.toLowerCase().trim() });
       setIsOtpModalOpen(true);
@@ -43,10 +45,10 @@ export const AuthProvider = ({ children }) => {
     if (!pendingUser) return false;
     try {
       await authApi.verifyOtp({ email: pendingUser.email, otp: enteredCode });
-      setPendingUser(null); setIsOtpModalOpen(false); triggerConfetti();
+      setPendingUser(null); setIsOtpModalOpen(false); setVerificationComplete(true); triggerConfetti();
       addToast('success', 'Verification Successful', 'Your email is verified. You can now sign in.');
       return true;
-    } catch (error) { addToast('error', 'Verification Failed', error.message); return false; }
+    } catch (error) { addToast('error', 'Verification Failed', error.message === 'Invalid OTP.' || error.message === 'OTP has expired.' ? 'Invalid or expired OTP.' : error.message); return false; }
   };
 
   const resendOtp = async () => {
@@ -88,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ currentUser, pendingUser, resetSession, emails: [], toasts, isOtpModalOpen, isForgotPasswordOpen, isEmailDrawerOpen, setIsOtpModalOpen, setIsForgotPasswordOpen, setIsEmailDrawerOpen, registerUser, verifyOtp, resendOtp, loginUser, logoutUser, requestPasswordReset, confirmPasswordReset, updateUserProfile, addToast, removeToast, triggerConfetti }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ currentUser, pendingUser, verificationComplete, resetSession, emails: [], toasts, isOtpModalOpen, isForgotPasswordOpen, isEmailDrawerOpen, setIsOtpModalOpen, setIsForgotPasswordOpen, setIsEmailDrawerOpen, setVerificationComplete, registerUser, verifyOtp, resendOtp, loginUser, logoutUser, requestPasswordReset, confirmPasswordReset, updateUserProfile, addToast, removeToast, triggerConfetti }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

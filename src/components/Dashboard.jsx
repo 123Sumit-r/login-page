@@ -153,7 +153,7 @@ export const Dashboard = () => {
           </div>
 
           <div className="pt-3 border-t border-white/5 text-[11px] text-slate-400 flex items-center justify-between">
-            <span>Session ID: {currentUser.id ? currentUser.id.slice(0, 12) : 'active'}</span>
+            <span>Session ID: {currentUser.id ? String(currentUser.id).slice(0, 12) : 'active'}</span>
             <span className="text-blue-400 font-medium">Browser Persisted</span>
           </div>
         </div>

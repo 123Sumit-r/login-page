@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles, ShieldAlert } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, LogIn, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const LoginForm = ({ onSwitchToRegister }) => {
@@ -41,25 +41,14 @@ export const LoginForm = ({ onSwitchToRegister }) => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await loginUser({
-      email: formData.email,
-      password: formData.password
-    });
-    setIsSubmitting(false);
-  };
-
-  // Quick Demo Credentials prefill for assessor testing
-  const handleQuickDemo = () => {
-    const demoEmail = 'sumit@skovio.in';
-    const demoPass = 'Skovio@2026';
-    
-    // Auto fill form
-    setFormData({
-      email: demoEmail,
-      password: demoPass,
-      rememberMe: true
-    });
-
+    try {
+      await loginUser({
+        email: formData.email,
+        password: formData.password
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,26 +57,9 @@ export const LoginForm = ({ onSwitchToRegister }) => {
 
         {/* Top Header */}
         <div className="mb-6 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 mb-3 shadow-lg shadow-indigo-500/30 text-white font-bold">
-            <LogIn className="w-6 h-6" />
-          </div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Welcome Back</h2>
-          <p className="text-xs text-slate-400 mt-1">Sign in to your Skovio portal</p>
-        </div>
-
-        {/* Quick Demo Pre-fill banner */}
-        <div className="mb-5 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-blue-300">
-            <Sparkles className="w-4 h-4 text-blue-400 shrink-0 animate-pulse" />
-            <span>Assessor Quick Demo Test</span>
-          </div>
-          <button
-            type="button"
-            onClick={handleQuickDemo}
-            className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-[11px] transition-colors cursor-pointer"
-          >
-            Auto-Fill Demo
-          </button>
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-2">Welcome back</p>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Sign in to Skovio</h2>
+          <p className="text-sm text-slate-500 mt-2">Use your account credentials to continue.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -171,7 +143,7 @@ export const LoginForm = ({ onSwitchToRegister }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+            className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 mt-4 cursor-pointer"
           >
             <LogIn className="w-4 h-4" />
             <span>Sign In</span>

@@ -91,12 +91,15 @@ export const RegisterForm = ({ onSwitchToLogin }) => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await registerUser({
-      fullName: formData.fullName,
-      email: formData.email,
-      password: formData.password
-    });
-    setIsSubmitting(false);
+    try {
+      await registerUser({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const strength = getStrengthLabel();
@@ -107,11 +110,9 @@ export const RegisterForm = ({ onSwitchToLogin }) => {
         
         {/* Top Header */}
         <div className="mb-6 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 mb-3 shadow-lg shadow-blue-500/30 text-white font-bold">
-            <User className="w-6 h-6" />
-          </div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">Create an Account</h2>
-          <p className="text-xs text-slate-400 mt-1">Join Skovio & verify your email with OTP</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-2">Get started</p>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Create an account</h2>
+          <p className="text-sm text-slate-500 mt-2">Set up your secure Skovio account.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -280,14 +281,14 @@ export const RegisterForm = ({ onSwitchToLogin }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center gap-2 group mt-4 cursor-pointer"
+            className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 mt-4 cursor-pointer"
           >
             {isSubmitting ? (
               <span className="animate-pulse">Generating OTP...</span>
             ) : (
               <>
                 <span>Register & Send Email OTP</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>

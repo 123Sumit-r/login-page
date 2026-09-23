@@ -9,34 +9,28 @@ import { ForgotPasswordModal } from './components/ForgotPasswordModal';
 import { ToastContainer } from './components/Toast';
 
 const MainContent = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, verificationComplete, setVerificationComplete } = useAuth();
   const [activeTab, setActiveTab] = useState('register'); // 'register' | 'login'
+  const visibleTab = verificationComplete ? 'login' : activeTab;
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden text-slate-100">
-      
-      {/* Background glowing spheres */}
-      <div className="bg-glow-1" />
-      <div className="bg-glow-2" />
-      <div className="bg-glow-3" />
-
-      {/* Header Navigation */}
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Navbar />
 
       {/* Main Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10 flex flex-col justify-center items-center">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex flex-col justify-center items-center">
         {currentUser ? (
           <Dashboard />
         ) : (
           <div className="w-full max-w-md mx-auto">
             
             {/* Tab Selector */}
-            <div className="flex items-center justify-center p-1 bg-slate-900/80 rounded-2xl border border-white/10 w-full mb-6">
+            <div className="flex items-center justify-center p-1 bg-white rounded-lg border border-slate-200 w-full mb-6 shadow-sm">
               <button
-                onClick={() => setActiveTab('register')}
+                onClick={() => { setVerificationComplete(false); setActiveTab('register'); }}
                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
-                  activeTab === 'register'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
+                  visibleTab === 'register'
+                    ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -45,8 +39,8 @@ const MainContent = () => {
               <button
                 onClick={() => setActiveTab('login')}
                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
-                  activeTab === 'login'
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25'
+                  visibleTab === 'login'
+                    ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -55,7 +49,7 @@ const MainContent = () => {
             </div>
 
             {/* Tab Content */}
-            {activeTab === 'register' ? (
+            {visibleTab === 'register' ? (
               <RegisterForm onSwitchToLogin={() => setActiveTab('login')} />
             ) : (
               <LoginForm onSwitchToRegister={() => setActiveTab('register')} />
@@ -70,7 +64,7 @@ const MainContent = () => {
       <ToastContainer />
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-slate-950/80 py-6 text-center text-xs text-slate-400 relative z-10">
+      <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>© 2026 Skovio Technical Assessment • Built for Internship Submission</p>
           <div className="flex items-center gap-4">
